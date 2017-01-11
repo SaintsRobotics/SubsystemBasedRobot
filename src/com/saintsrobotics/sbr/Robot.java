@@ -27,13 +27,14 @@ public class Robot extends CustomIterativeRobot {
     
     @Override
     public void operatorTick() {
+        drive.runOperatorTick();
         motors.update();
-        drive.runTick();
     }
     
     @Override
     public void autonomousTick() {
-        
+        drive.runAutonomousTick();
+        motors.update();
     }
     
     @Override

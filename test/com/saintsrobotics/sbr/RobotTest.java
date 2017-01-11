@@ -69,4 +69,18 @@ public class RobotTest {
         verify(leftDrive, atLeastOnce()).set(1.0);
         verify(rightDrive, atLeastOnce()).set(0.0);
     }
+    
+    @Test
+    public void testAutonomous() throws InterruptedException {
+        robot.onRobotCodeBoot();
+        for (int i = 0; i < 200; i++) {
+            robot.autonomousTick();
+            Thread.sleep(20); // to test the timing aspect
+        }
+        verify(leftDrive, atLeastOnce()).set(0.5);
+        verify(rightDrive, atLeastOnce()).set(0.5);
+        
+        verify(leftDrive, atLeastOnce()).set(0.0);
+        verify(rightDrive, atLeastOnce()).set(0.0);
+    }
 }

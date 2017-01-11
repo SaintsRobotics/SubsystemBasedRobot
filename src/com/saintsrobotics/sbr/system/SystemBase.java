@@ -13,5 +13,6 @@ abstract class SystemBase {
         this.oi = oi;
     }
     
-    public abstract void runTick();
+    public abstract void runOperatorTick();
+    public abstract void runAutonomousTick();
 }
