@@ -39,6 +39,20 @@ public class DriveSystem extends SystemBase {
         }
     }
     
+    private class SensorExample extends SystemBehavior<AutonomousMode> {
+    
+        @Override
+        public void runModeTick() {
+            if (sensors.limitSwitches.exampleSwitch.get()) {
+                setLeftMotors(0);
+                setRightMotors(0);
+            } else {
+                setLeftMotors(0.3);
+                setRightMotors(0.3);
+            }
+        }
+    }
+    
     private class AutonomousMoveForward extends SystemBehavior<AutonomousMode> {
         
         private Waiter waiter2s = Waiter.forSeconds(2);
@@ -88,7 +102,8 @@ public class DriveSystem extends SystemBase {
             } else if (waiters[5].untilPassed()) {
                 motors.rightDrive3.set(speed);
             } else {
-                motors.stopAll();
+                setLeftMotors(0);
+                setRightMotors(0);
                 for (Waiter waiter : waiters) {
                     waiter.reset();
                 }

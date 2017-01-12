@@ -11,12 +11,12 @@ public class LimitSwitches {
     
     public final LimitSwitch exampleSwitch;
     
-    public LimitSwitches(int exampleSwitchPin) {
+    LimitSwitches(int exampleSwitchPin) {
         exampleSwitch = new LimitSwitch(exampleSwitchPin);
         switches.add(exampleSwitch);
     }
     
-    public void init() {
+    void init() {
         switches.forEach(LimitSwitch::init);
     }
     
@@ -25,12 +25,16 @@ public class LimitSwitches {
         private final int pin;
         private DigitalInput switchInput;
     
-        public LimitSwitch(int pin) {
+        LimitSwitch(int pin) {
             this.pin = pin;
         }
         
         private void init() {
             switchInput = new DigitalInput(pin);
+        }
+        
+        public boolean get() {
+            return switchInput.get();
         }
     }
 }
