@@ -8,27 +8,40 @@ public class DriveSystem extends SystemBase {
     
     public DriveSystem(Motors motors, OI oi) {
         super(motors, oi);
+        waiter2s = Waiter.forSeconds(2);
     }
     
     @Override
     public void runOperatorTick() {
-        double forward = oi.drive.axis.leftStickY();
+        double forward = -oi.drive.axis.leftStickY();
         double turn = oi.drive.axis.rightStickX();
         
-        motors.leftDrive.set(forward + turn);
-        motors.rightDrive.set(forward - turn);
+        setLeftMotors(forward + turn);
+        setRightMotors(forward - turn);
     }
     
-    private Waiter waiter = Waiter.forSeconds(2);
+    private Waiter waiter2s;
     
     @Override
     public void runAutonomousTick() {
-        if (waiter.untilPassed()) {
-            motors.leftDrive.set(0.5);
-            motors.rightDrive.set(0.5);
+        if (waiter2s.untilPassed()) {
+        	setLeftMotors(0.3);
+        	setRightMotors(0.3);
         } else {
-            motors.leftDrive.set(0);
-            motors.rightDrive.set(0);
+        	setLeftMotors(0);
+            setRightMotors(0);
         }
+    }
+    
+    private void setLeftMotors(double val) {
+    	motors.leftDrive1.set(val);
+        motors.leftDrive2.set(val);
+        motors.leftDrive3.set(val);
+    }
+    
+    private void setRightMotors(double val) {
+    	motors.rightDrive1.set(val);
+        motors.rightDrive2.set(val);
+        motors.rightDrive3.set(val);
     }
 }

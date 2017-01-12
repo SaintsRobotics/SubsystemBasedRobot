@@ -5,3 +5,6 @@
 /*.properties
 !/build.properties
 /out/
+/.classpath
+/.project
+/bin/

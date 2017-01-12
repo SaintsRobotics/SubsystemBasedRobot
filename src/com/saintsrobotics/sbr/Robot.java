@@ -5,6 +5,8 @@ import com.saintsrobotics.sbr.output.Motors;
 import com.saintsrobotics.sbr.output.PracticeMotors;
 import com.saintsrobotics.sbr.system.DriveSystem;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 public class Robot extends CustomIterativeRobot {
     
     private final Motors motors = new PracticeMotors();
@@ -29,6 +31,11 @@ public class Robot extends CustomIterativeRobot {
     public void operatorTick() {
         drive.runOperatorTick();
         motors.update();
+    }
+    
+    @Override
+    public void onEnterAutonomous() {
+    	drive = new DriveSystem(motors, oi);
     }
     
     @Override
