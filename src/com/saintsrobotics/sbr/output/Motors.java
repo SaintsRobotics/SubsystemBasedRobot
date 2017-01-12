@@ -1,6 +1,5 @@
 package com.saintsrobotics.sbr.output;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Talon;
 
 import java.util.ArrayList;
@@ -74,7 +73,6 @@ public abstract class Motors {
         }
     
         void update() {
-        	DriverStation.reportError(setpoint + " " + current, false);
             if (Math.abs(setpoint - current) < MOTOR_RAMPING) {
                 current = setpoint;
             } else if (setpoint > current) {

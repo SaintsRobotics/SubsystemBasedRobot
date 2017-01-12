@@ -4,8 +4,7 @@ import com.saintsrobotics.sbr.input.OI;
 import com.saintsrobotics.sbr.output.Motors;
 import com.saintsrobotics.sbr.output.PracticeMotors;
 import com.saintsrobotics.sbr.system.DriveSystem;
-
-import edu.wpi.first.wpilibj.DriverStation;
+import com.saintsrobotics.sbr.util.Log;
 
 public class Robot extends CustomIterativeRobot {
     
@@ -16,6 +15,7 @@ public class Robot extends CustomIterativeRobot {
     
     @Override
     protected void onRobotCodeBoot() {
+        Log.init();
         motors.init();
         oi.init();
         
@@ -28,6 +28,11 @@ public class Robot extends CustomIterativeRobot {
     }
     
     @Override
+    protected void onEnterOperator() {
+        drive.onEnterOperator();
+    }
+    
+    @Override
     public void operatorTick() {
         drive.runOperatorTick();
         motors.update();
@@ -35,7 +40,7 @@ public class Robot extends CustomIterativeRobot {
     
     @Override
     public void onEnterAutonomous() {
-    	drive = new DriveSystem(motors, oi);
+    	drive.onEnterAutonomous();
     }
     
     @Override
@@ -45,7 +50,13 @@ public class Robot extends CustomIterativeRobot {
     }
     
     @Override
+    protected void onEnterTest() {
+        drive.onEnterTest();
+    }
+    
+    @Override
     public void testTick() {
-        
+        drive.runTestTick();
+        motors.update();
     }
 }

@@ -8,28 +8,83 @@ public class DriveSystem extends SystemBase {
     
     public DriveSystem(Motors motors, OI oi) {
         super(motors, oi);
-        waiter2s = Waiter.forSeconds(2);
+        setBehaviors(
+                new ArcadeDrive(),
+                new AutonomousMoveForward(),
+                new TestEachMotor());
     }
     
-    @Override
-    public void runOperatorTick() {
-        double forward = -oi.drive.axis.leftStickY();
-        double turn = oi.drive.axis.rightStickX();
+    private class ArcadeDrive extends SystemBehavior<OperatorMode> {
+    
+        @Override
+        public void onEnterMode() {
+            
+        }
+    
+        @Override
+        public void runModeTick() {
+            double forward = -oi.drive.axis.leftStickY();
+            double turn = oi.drive.axis.rightStickX();
+    
+            setLeftMotors(forward + turn);
+            setRightMotors(forward - turn);
+        }
+    }
+    
+    private class AutonomousMoveForward extends SystemBehavior<AutonomousMode> {
         
-        setLeftMotors(forward + turn);
-        setRightMotors(forward - turn);
+        private Waiter waiter2s = Waiter.forSeconds(2);
+    
+        @Override
+        public void onEnterMode() {
+            waiter2s.reset();
+        }
+    
+        @Override
+        public void runModeTick() {
+            if (waiter2s.untilPassed()) {
+                setLeftMotors(0.3);
+                setRightMotors(0.3);
+            } else {
+                setLeftMotors(0);
+                setRightMotors(0);
+            }
+        }
     }
     
-    private Waiter waiter2s;
+    private class TestEachMotor extends SystemBehavior<TestMode> {
+        
+        private Waiter[] waiters = new Waiter[6];
     
-    @Override
-    public void runAutonomousTick() {
-        if (waiter2s.untilPassed()) {
-        	setLeftMotors(0.3);
-        	setRightMotors(0.3);
-        } else {
-        	setLeftMotors(0);
-            setRightMotors(0);
+        @Override
+        public void onEnterMode() {
+            for (int i = 0; i < waiters.length; i++) {
+                waiters[i] = Waiter.forSeconds(0.2);
+            }
+        }
+        
+        double speed = 0.2;
+    
+        @Override
+        public void runModeTick() {
+            if (waiters[0].untilPassed()) {
+                motors.leftDrive1.set(speed);
+            } else if (waiters[1].untilPassed()) {
+                motors.leftDrive2.set(speed);
+            } else if (waiters[2].untilPassed()) {
+                motors.leftDrive3.set(speed);
+            } else if (waiters[3].untilPassed()) {
+                motors.rightDrive1.set(speed);
+            } else if (waiters[4].untilPassed()) {
+                motors.rightDrive2.set(speed);
+            } else if (waiters[5].untilPassed()) {
+                motors.rightDrive3.set(speed);
+            } else {
+                motors.stopAll();
+                for (Waiter waiter : waiters) {
+                    waiter.reset();
+                }
+            }
         }
     }
     
