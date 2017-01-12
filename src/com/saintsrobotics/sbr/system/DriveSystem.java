@@ -1,13 +1,14 @@
 package com.saintsrobotics.sbr.system;
 
 import com.saintsrobotics.sbr.input.OI;
+import com.saintsrobotics.sbr.input.Sensors;
 import com.saintsrobotics.sbr.output.Motors;
 import com.saintsrobotics.sbr.util.Waiter;
 
 public class DriveSystem extends SystemBase {
     
-    public DriveSystem(Motors motors, OI oi) {
-        super(motors, oi);
+    public DriveSystem(Sensors sensors, Motors motors, OI oi) {
+        super(sensors, motors, oi);
         setBehaviors(
                 new DriveSystem.ArcadeDrive(),
                 new DriveSystem.AutonomousMoveForward(),

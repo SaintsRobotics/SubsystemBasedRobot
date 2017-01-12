@@ -1,18 +1,21 @@
 package com.saintsrobotics.sbr.system;
 
 import com.saintsrobotics.sbr.input.OI;
+import com.saintsrobotics.sbr.input.Sensors;
 import com.saintsrobotics.sbr.output.Motors;
 import com.saintsrobotics.sbr.util.Log;
 
 abstract class SystemBase {
     
+    final Sensors sensors;
     final Motors motors;
     final OI oi;
     private SystemBehavior<OperatorMode> operator;
     private SystemBehavior<AutonomousMode> autonomous;
     private SystemBehavior<TestMode> test;
     
-    SystemBase(Motors motors, OI oi) {
+    SystemBase(Sensors sensors, Motors motors, OI oi) {
+        this.sensors = sensors;
         this.motors = motors;
         this.oi = oi;
     }

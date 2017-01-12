@@ -1,6 +1,8 @@
 package com.saintsrobotics.sbr;
 
 import com.saintsrobotics.sbr.input.OI;
+import com.saintsrobotics.sbr.input.PracticeSensors;
+import com.saintsrobotics.sbr.input.Sensors;
 import com.saintsrobotics.sbr.output.Motors;
 import com.saintsrobotics.sbr.output.PracticeMotors;
 import com.saintsrobotics.sbr.system.DriveSystem;
@@ -8,6 +10,7 @@ import com.saintsrobotics.sbr.util.Log;
 
 public class Robot extends CustomIterativeRobot {
     
+    private final Sensors sensors = new PracticeSensors();
     private final Motors motors = new PracticeMotors();
     private final OI oi = new OI();
     
@@ -16,10 +19,11 @@ public class Robot extends CustomIterativeRobot {
     @Override
     protected void onRobotCodeBoot() {
         Log.init();
+        sensors.init();
         motors.init();
         oi.init();
         
-        drive = new DriveSystem(motors, oi);
+        drive = new DriveSystem(sensors, motors, oi);
     }
     
     @Override
