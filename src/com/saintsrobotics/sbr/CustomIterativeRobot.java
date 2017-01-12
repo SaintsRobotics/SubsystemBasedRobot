@@ -32,6 +32,7 @@ public abstract class CustomIterativeRobot extends RobotBase {
         // first and one-time initialization
         LiveWindow.setEnabled(false);
     
+        //noinspection InfiniteLoopStatement
         while (true) {
             if (isDisabled()) {
                 m_ds.InDisabled(true);

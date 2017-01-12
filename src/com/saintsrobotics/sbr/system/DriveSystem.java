@@ -9,17 +9,12 @@ public class DriveSystem extends SystemBase {
     public DriveSystem(Motors motors, OI oi) {
         super(motors, oi);
         setBehaviors(
-                new ArcadeDrive(),
-                new AutonomousMoveForward(),
-                new TestEachMotor());
+                new DriveSystem.ArcadeDrive(),
+                new DriveSystem.AutonomousMoveForward(),
+                new DriveSystem.TestEachMotor());
     }
     
     private class ArcadeDrive extends SystemBehavior<OperatorMode> {
-    
-        @Override
-        public void onEnterMode() {
-            
-        }
     
         @Override
         public void runModeTick() {
@@ -28,6 +23,18 @@ public class DriveSystem extends SystemBase {
     
             setLeftMotors(forward + turn);
             setRightMotors(forward - turn);
+        }
+    }
+    
+    private class TankDrive extends SystemBehavior<OperatorMode> {
+    
+        @Override
+        public void runModeTick() {
+            double left = -oi.drive.axis.leftStickY();
+            double right = -oi.drive.axis.rightStickY();
+        
+            setLeftMotors(left);
+            setRightMotors(right);
         }
     }
     
